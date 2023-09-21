@@ -54,9 +54,7 @@ export class HomeWorkRepositoryr implements HomeWorkRepository<HomeWork>{
             
             const query = "UPDATE homework SET status_tarea = $1, intentos = $2, stars = $3 WHERE id = $4";
             const result = await client.query(query,[status, intentos, stars, id]);
-            if(result.rowCount > 0){
-                return 1;
-            }else{
+            if(result.rowCount === 0){
                 return 2;
             }
         }catch(error){
@@ -64,8 +62,26 @@ export class HomeWorkRepositoryr implements HomeWorkRepository<HomeWork>{
             return 2;
         }finally {
             client.release(); // Libera la conexión cuando la consulta haya terminado
-          }
+        }
+        return 1;
     }
 
+    async deltehomwork(idh: number): Promise<number> {
+        const client = await pool.connect();
+        try{
+            const query = "DELETE FROM homework WHERE id = $1"
+            const result = await client.query(query, [idh]);
+            if(result.rowCount === 0){
+                return 2;
+            }
+            
+        }catch(error){
+            console.log(error);
+            return 2;
+        } finally{
+            client.release();
+        }
+        return 1;
+    }
     
 }

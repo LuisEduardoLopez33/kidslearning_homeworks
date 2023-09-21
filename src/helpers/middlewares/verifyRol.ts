@@ -2,6 +2,11 @@ import { NextFunction, Request, Response } from "express";
 
 export const validateRol = async (req: Request, res: Response, next: NextFunction) => {
     const roldeusuario = req.body.user_rol;
+    if(!roldeusuario){
+        return res.status(400).json({
+            msg: 'NO EXISTE EL ROL DE USUARIO PROPORCIONADO EN LA PETICION'
+         });
+    }
     const validar = await getRol(roldeusuario);
     if (validar == 1)
          return res.status(400).json({

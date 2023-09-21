@@ -1,7 +1,7 @@
 {
-  "name": "kidslearning_class_service",
+  "name": "kidslearning_homeworks",
   "version": "1.0.0",
-  "description": "Skeleton for new typescript services based on hexagonal architecture",
+  "description": "homeworks service ",
   "main": "src/index.js",
   "scripts": {
     "start": "node dist/src/main.js",
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlbertHernandez/express-typescript-service-skeleton.git"
+    "url": ""
   },
   "keywords": [
     "typescript",

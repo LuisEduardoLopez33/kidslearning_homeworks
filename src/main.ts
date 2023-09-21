@@ -10,8 +10,6 @@ const signale = new Signale();
 
 app.use(express.json());
 app.use("/class", homeWorkRoute);
-
-
 app.listen(3000, () => {
-  signale.success("Server online in port 3000");
+  signale.success("Server homeworks online in port 3000");
 });

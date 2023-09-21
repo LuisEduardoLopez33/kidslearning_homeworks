@@ -3,11 +3,13 @@ import { CreateHomeWorkUseCase } from "../../application/CreateHomeWorkUseCase";
 import { ObtenerHomeWorkUseCase } from "../../application/ObtenerHomeWorksUseCase";
 import { HomeWorkData, HomeWorkUpdateData } from "../../domain/HomeWorkRepository";
 import { ActualizarHomeWorkUseCase } from "../../application/ActualizarHomeWork";
+import { DeleteHomeWorkUseCase } from "../../application/DeleteHomeWork";
 export class HomeWorkController {
     constructor(
         readonly createHomeWorkUseCase: CreateHomeWorkUseCase,
         readonly obtenerHomeWorkUseCase: ObtenerHomeWorkUseCase,
-        readonly actualizarHomeWorkUseCase: ActualizarHomeWorkUseCase
+        readonly actualizarHomeWorkUseCase: ActualizarHomeWorkUseCase,
+        readonly deleteHomeWorkUseCase: DeleteHomeWorkUseCase
         ){}
     async createHomework(req: Request, res: Response){
         const data: HomeWorkData ={
@@ -19,8 +21,12 @@ export class HomeWorkController {
         } 
         try{
             const homeWork = await this.createHomeWorkUseCase.run(data);
-            if(homeWork){
-                res.status(200).send("se creo");
+            if(homeWork == 1){
+                res.status(200).send({
+                    status: "success",
+                    data: "se guardo los datos"
+                    
+                });
             }else{
                 res.status(200).send('NO SE CREO LA TAREA')
             }
@@ -39,7 +45,7 @@ export class HomeWorkController {
             const homeWorks = await this.obtenerHomeWorkUseCase.run(idProfile);
             if(homeWorks){
                 if(homeWorks == 2){
-                    res.status(204).send({
+                    res.status(404).send({
                         status: "error",
                         data: "EL PERFIL NO TIENE TAREAS",
                         
@@ -49,7 +55,7 @@ export class HomeWorkController {
                 }
                 
             }else{
-                res.status(204).send({
+                res.status(404).send({
                     status: "error",
                     data: "NO SE ENCONTRARON TAREAS",
                     
@@ -82,6 +88,25 @@ export class HomeWorkController {
                 msn: error,
             });
 
+        }
+    }
+
+    async deleteHomeWork(req: Request, res: Response){
+        try{
+            const idh = req.body.id_tarea;
+            const deleteHomework =  await this.deleteHomeWorkUseCase.run(idh);
+            if(deleteHomework == 1){
+                res.status(200).send("DATO ELIMINADO");
+            }
+            if(deleteHomework == 2){
+                res.status(400).send("NO SE PUDO ELIMINAR O NO EXISTE LA TAREA");
+            }
+        }catch(error){
+            res.status(404).send({
+                status: "error",
+                data: "Ocurrio un error",
+                msn: error,
+            });
         }
     }
 }
